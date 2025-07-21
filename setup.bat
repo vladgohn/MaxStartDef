@@ -1,10 +1,10 @@
 @echo off
-setlocal
+setlocal EnableDelayedExpansion
 
 set "TEMP_DIR=%TEMP%\maxstart_temp"
 set "MAXFILE_URL=https://github.com/vladgohn/MaxStartDef/raw/main/maxstart.max"
 set "MAXFILE_NAME=maxstart.max"
-set "COUNT=0"
+set COUNT=0
 
 echo [1/4] 🌟 Creating temp folder...
 mkdir "%TEMP_DIR%" >nul 2>&1
@@ -23,14 +23,14 @@ for /d %%V in ("%LOCALAPPDATA%\Autodesk\3dsMax\*") do (
     for /d %%E in ("%%~fV\*\ENU\scenes") do (
         echo    ➜ Copying to: %%~fE
         copy /Y "%TEMP_DIR%\%MAXFILE_NAME%" "%%~fE\" >nul
-        set /a COUNT+=1
+        set /a COUNT=!COUNT!+1
     )
 )
 
-if %COUNT% EQU 0 (
+if !COUNT! EQU 0 (
     echo ⚠️  No 3ds Max versions found under %LOCALAPPDATA%\Autodesk\3dsMax\
 ) else (
-    echo ✅ Successfully copied to %COUNT% version(s) of 3ds Max.
+    echo ✅ Successfully copied to !COUNT! version(s) of 3ds Max.
 )
 
 echo [4/4] 🧹 Cleaning up temp files...
